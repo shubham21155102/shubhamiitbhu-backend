@@ -29,7 +29,11 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
-
+  @Get('health')
+  @HttpCode(HttpStatus.ACCEPTED)
+  healthCheck() {
+    return this.userService.healthCheck();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

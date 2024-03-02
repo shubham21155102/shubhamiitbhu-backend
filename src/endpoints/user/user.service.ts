@@ -12,7 +12,12 @@ export class UserService {
   findAll() {
     return `This action returns all user`;
   }
-
+  healthCheck() {
+    return {
+      status: 200,
+      message: 'Health check is successful',
+    };
+  }
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
