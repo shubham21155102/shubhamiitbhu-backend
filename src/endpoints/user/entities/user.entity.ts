@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Question } from 'src/endpoints/questions/entities/question.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
@@ -24,4 +32,6 @@ export class User extends BaseEntity {
     nullable: false,
   })
   password: string;
+  @ManyToMany(() => Question, (question) => question.users)
+  questions: Question[];
 }

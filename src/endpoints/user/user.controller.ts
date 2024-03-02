@@ -5,11 +5,11 @@ import { CreateUserDto, LogInDto } from './dto/user';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
-  @Get()
+  @Post('login')
   async logIn(@Body() logInDto: LogInDto) {
     return this.userService.logIn(logInDto);
   }
