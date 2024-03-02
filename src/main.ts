@@ -5,11 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { Settings } from 'luxon';
 import * as compression from 'compression';
-import {
-  SwaggerModule,
-  DocumentBuilder,
-  SwaggerDocumentOptions,
-} from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
@@ -21,21 +17,20 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(configService.getPort());
-  const config = new DocumentBuilder()
+
+  const swaggerOptions = new DocumentBuilder()
     .setTitle('Shubham IITBHU API Server')
     .setVersion('1.0')
     .addServer(
       `http://localhost:${configService.getPort()}/`,
       'Local environment',
     )
-    .addServer('https://dev.ostello.co.in/', 'Development')
-    // .addServer('https://api2.ostello.co.in/', 'Production')
+    .addServer('https://api.shubhamiitbhu.in/', 'Development')
+    .addServer('https://shubhamiitbhu-backend.onrender.com/', 'Production')
     .build();
-  const options: SwaggerDocumentOptions = {
-    deepScanRoutes: true,
-  };
-  const document = SwaggerModule.createDocument(app, config, options);
-  SwaggerModule.setup('', app, document);
+
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
+  SwaggerModule.setup('', app, swaggerDocument);
+  await app.listen(configService.getPort());
 }
 bootstrap();
