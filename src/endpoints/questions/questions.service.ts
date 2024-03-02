@@ -56,7 +56,48 @@ export class QuestionsService {
       };
     }
   }
+  async remove(createQuestionDto: CreateQuestionDto) {
+    try {
+      const question = await this.questionRepository.findOne({
+        where: {
+          questionid: createQuestionDto.questionid,
+        },
+        relations: ['users'],
+      });
+      if (!question) {
+        return {
+          message: 'Question Not Found',
+          status: 404,
+        };
+      }
+      const user = await this.userRepository.findOne({
+        where: {
+          id: createQuestionDto.userid,
+        },
+      });
+      if (!user) {
+        return {
+          message: 'User Not Found',
+          status: 404,
+        };
+      }
+      if (question.users.some((u) => u.id === user.id)) {
+        question.users = question.users.filter((u) => u.id !== user.id);
+        await this.questionRepository.save(question);
+      }
 
+      return {
+        message: 'User removed from the question successfully',
+        status: 200,
+      };
+    } catch (e) {
+      return {
+        message: 'Error in removing user from question',
+        error: e.message,
+        status: 400,
+      };
+    }
+  }
   async findAll(userId: SearchSolvedQuestionsDto) {
     const userWithSolvedQuestions = await this.userRepository.findOne({
       relations: ['questions'],
@@ -80,10 +121,6 @@ export class QuestionsService {
 
   update(id: number, updateQuestionDto: UpdateQuestionDto) {
     return `This action updates a #${id} question`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} question`;
   }
   async addBulkQuestions() {
     x.data.map((questions) => {

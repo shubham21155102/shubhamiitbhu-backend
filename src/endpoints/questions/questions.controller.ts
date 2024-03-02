@@ -19,6 +19,10 @@ export class QuestionsController {
   async create(@Body() createQuestionDto: CreateQuestionDto) {
     return this.questionsService.create(createQuestionDto);
   }
+  @Delete()
+  remove(@Body() createQuestionDto: CreateQuestionDto) {
+    return this.questionsService.remove(createQuestionDto);
+  }
   @Get('addbulk')
   async addBulkQuestions() {
     return this.questionsService.addBulkQuestions();
@@ -27,7 +31,7 @@ export class QuestionsController {
   findAll(@Body() userId: SearchSolvedQuestionsDto) {
     return this.questionsService.findAll(userId);
   }
-
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.questionsService.findOne(+id);
@@ -41,8 +45,5 @@ export class QuestionsController {
     return this.questionsService.update(+id, updateQuestionDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
-  }
+
 }
