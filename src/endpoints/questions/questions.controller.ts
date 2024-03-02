@@ -23,7 +23,7 @@ export class QuestionsController {
   async addBulkQuestions() {
     return this.questionsService.addBulkQuestions();
   }
-  @Get()
+  @Post('questions')
   findAll(@Body() userId: SearchSolvedQuestionsDto) {
     return this.questionsService.findAll(userId);
   }
