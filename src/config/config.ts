@@ -56,6 +56,9 @@ class ConfigService {
   public getPort(): number {
     return parseInt(this.getValue('PORT', true));
   }
+  public getJWTSecret(): string {
+    return this.getValue('JWT_SECRET', true);
+  }
   private getValue(key: string, throwOnMissing = true): string {
     const value = this.env[key];
 

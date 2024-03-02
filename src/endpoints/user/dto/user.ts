@@ -9,3 +9,9 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 }
+export class LogInDto {
+  @IsNotEmpty()
+  username: string;
+  @IsNotEmpty()
+  password: string;
+}
