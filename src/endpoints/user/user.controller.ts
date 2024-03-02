@@ -13,4 +13,8 @@ export class UserController {
   async logIn(@Body() logInDto: LogInDto) {
     return this.userService.logIn(logInDto);
   }
+  @Get('health')
+  async health() {
+    return this.userService.healthCheck();
+  }
 }
