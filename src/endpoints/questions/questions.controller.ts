@@ -31,7 +31,7 @@ export class QuestionsController {
   findAll(@Body() userId: SearchSolvedQuestionsDto) {
     return this.questionsService.findAll(userId);
   }
-  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.questionsService.findOne(+id);
@@ -44,6 +44,4 @@ export class QuestionsController {
   ) {
     return this.questionsService.update(+id, updateQuestionDto);
   }
-
-
 }

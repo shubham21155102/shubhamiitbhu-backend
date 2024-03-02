@@ -123,19 +123,23 @@ export class QuestionsService {
     return `This action updates a #${id} question`;
   }
   async addBulkQuestions() {
-    x.data.map((questions) => {
-      questions.sub_steps.map((question) => {
-        question.topics.map(async (q) => {
-          // console.log(q.title, q.id, question.title, questions.title);
-          await this.questionRepository.save({
-            questionid: q.id,
-            title: questions.title,
-            subtitle: question.title,
-            subsubtitle: q.title,
-          });
+    const promises = [];
+    x.data.forEach((questions) => {
+      questions.sub_steps.forEach((question) => {
+        question.topics.forEach((q) => {
+          promises.push(
+            this.questionRepository.save({
+              questionid: q.id,
+              title: questions.title,
+              subtitle: question.title,
+              subsubtitle: q.title,
+            }),
+          );
         });
       });
     });
+    await Promise.all(promises);
+
     return {
       message: 'Questions added successfully',
       status: 201,
