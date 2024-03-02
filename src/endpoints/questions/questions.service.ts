@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateQuestionDto, SearchSolvedQuestionsDto } from './dto/questions';
-import { UpdateQuestionDto } from './dto/update-question.dto';
 import x from './questions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './entities/question.entity';
@@ -14,6 +13,11 @@ export class QuestionsService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+  /**
+   * @description Question solving service
+   * @param createQuestionDto
+   * @returns
+   */
   async create(createQuestionDto: CreateQuestionDto) {
     try {
       const question = await this.questionRepository.findOne({
@@ -56,6 +60,11 @@ export class QuestionsService {
       };
     }
   }
+  /**
+   * @description Remove user from question
+   * @param createQuestionDto
+   * @returns
+   */
   async remove(createQuestionDto: CreateQuestionDto) {
     try {
       const question = await this.questionRepository.findOne({
@@ -98,6 +107,11 @@ export class QuestionsService {
       };
     }
   }
+  /**
+   * @description Get all questions solved by user
+   * @param userId
+   * @returns
+   */
   async findAll(userId: SearchSolvedQuestionsDto) {
     const userWithSolvedQuestions = await this.userRepository.findOne({
       relations: ['questions'],
@@ -114,14 +128,10 @@ export class QuestionsService {
       data: allQuestionIds,
     };
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
-  }
-
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
-  }
+  /**
+   * @description Add bulk questions
+   * @returns
+   */
   async addBulkQuestions() {
     const promises = [];
     x.data.forEach((questions) => {

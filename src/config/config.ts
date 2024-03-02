@@ -59,6 +59,13 @@ class ConfigService {
   public getJWTSecret(): string {
     return this.getValue('JWT_SECRET', true);
   }
+  public getCashFreeConfigs() {
+    return {
+      appId: this.getValue('XClientId'),
+      secretKey: this.getValue('XClientSecret'),
+      url: this.getValue('CashFreeLink'),
+    };
+  }
   private getValue(key: string, throwOnMissing = true): string {
     const value = this.env[key];
 
