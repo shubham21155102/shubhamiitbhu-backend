@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CashFreePaymentCreationDto } from './dto/paymentDto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { configService } from 'src/config/config';
-import axios from 'axios';
 
 @Injectable()
 export class PaymentService {
