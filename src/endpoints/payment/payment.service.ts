@@ -83,14 +83,14 @@ export class PaymentService {
         },
       };
 
-      let response = await fetch(`${url}/pg/orders/${orderId}`, {
+      const response = await fetch(`${url}/pg/orders/${orderId}`, {
         method: options.method,
         headers: options.headers,
       });
       const responseBody = await response.json();
       const x = [];
       x.push(responseBody);
-      console.log(x);
+      // console.log(x);
       const orderStatus = x[0].order_status;
       if (orderStatus === 'PAID') {
         return {
