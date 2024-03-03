@@ -41,11 +41,16 @@ export class PaymentService {
         },
       };
 
-      const response = await axios.request(options);
+      let response = await fetch(options.url, {
+        method: options.method,
+        headers: options.headers,
+        body: JSON.stringify(options.data),
+      });
+      response = await response.json();
       return {
         message: 'New Order Id Created Successfully',
         success: true,
-        payment_details: response.data,
+        payment_details: response,
         status: 200,
       };
     } catch (error) {
@@ -79,9 +84,15 @@ export class PaymentService {
         },
       };
 
-      const response = await axios.request(options);
-      const orderStatus = response.data.order_status;
-
+      let response = await fetch(`${url}/pg/orders/${orderId}`, {
+        method: options.method,
+        headers: options.headers,
+      });
+      const responseBody = await response.json();
+      const x = [];
+      x.push(responseBody);
+      console.log(x);
+      const orderStatus = x[0].order_status;
       if (orderStatus === 'PAID') {
         return {
           message: 'Payment Successful',
