@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Redirect } from '@nestjs/common';
 import { CashFreePaymentCreationDto } from './dto/paymentDto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { configService } from 'src/config/config';
@@ -98,12 +98,14 @@ export class PaymentService {
           success: true,
           status: 200,
         };
+        // return Redirect('http://localhost:3000/success');
       } else if (orderStatus === 'ACTIVE') {
         return {
           message: 'Payment Pending',
           success: false,
           status: 205,
         };
+        // return Redirect('http://localhost:3000/failure');
       } else {
         return {
           message: 'Payment Failed',
