@@ -29,6 +29,20 @@ export class CodeService {
       // code.submittedBy = user;
       // code.questionId = question;
       // await this.codeRepository.save(code);
+      const checkExistingCode = await this.codeRepository.findOne({
+        where: {
+          submittedBy: createCodeDto.submittedBy,
+          questionId: createCodeDto.questionId,
+        },
+      });
+      if (checkExistingCode) {
+        checkExistingCode.code = createCodeDto.code;
+        await this.codeRepository.save(checkExistingCode);
+        return {
+          message: 'Code updated successfully',
+          status: 200,
+        };
+      }
       const code = await this.codeRepository.create(createCodeDto);
       await this.codeRepository.save(code);
     } catch (e) {
