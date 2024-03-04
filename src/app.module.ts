@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { configService } from './config/config';
 import { QuestionsModule } from './endpoints/questions/questions.module';
 import { PaymentModule } from './endpoints/payment/payment.module';
+import { CodeModule } from './endpoints/code/code.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { PaymentModule } from './endpoints/payment/payment.module';
     TypeOrmModule.forRootAsync(configService.typeOrmAsyncConfig),
     QuestionsModule,
     PaymentModule,
+    CodeModule,
   ],
   controllers: [],
   providers: [],
