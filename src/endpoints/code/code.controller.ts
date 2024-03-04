@@ -11,7 +11,7 @@ export class CodeController {
     return this.codeService.create(createCodeDto);
   }
 
-  @Get()
+  @Post('get-code-by-question-id-and-user-id')
   async getCodeByQuestionIdAAndUserId(
     @Body() data: { questionId: string; userId: string },
   ) {
