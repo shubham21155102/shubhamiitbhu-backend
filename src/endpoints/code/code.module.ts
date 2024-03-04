@@ -7,7 +7,7 @@ import { User } from '../user/entities/user.entity';
 import { Question } from '../questions/entities/question.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Code,User,Question])],
+  imports: [TypeOrmModule.forFeature([Code, User, Question])],
   controllers: [CodeController],
   providers: [CodeService],
 })
