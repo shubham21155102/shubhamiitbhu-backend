@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { CodeService } from './code.service';
 import { CreateCodeDto } from './dto/code.dto';
 
@@ -19,5 +19,13 @@ export class CodeController {
       data.questionId,
       data.userId,
     );
+  }
+  @Post('run-code')
+  async runCode(@Body() createCodeDto: CreateCodeDto) {
+    return this.codeService.runCode(createCodeDto);
+  }
+  @Get('get-gcc-version')
+  async getGccVersion() {
+    return this.codeService.checkGccVersion();
   }
 }

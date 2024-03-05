@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 import { Code } from './entities/code.entity';
 import { Question } from '../questions/entities/question.entity';
-
+import { exec } from 'child_process';
+import * as fs from 'fs';
 @Injectable()
 export class CodeService {
   constructor(
@@ -77,5 +78,82 @@ export class CodeService {
     } catch (e) {
       console.log(e);
     }
+  }
+  async runCode(createCodeDto: CreateCodeDto) {
+    const code = createCodeDto.code;
+    const language = 'cpp';
+    try {
+      if (language === 'cpp') {
+        fs.writeFileSync(`codes/${createCodeDto.questionId}.cpp`, code);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    return new Promise((resolve, reject) => {
+      // const command = `cd "codes/" && g++ --std=c++17 ${createCodeDto.questionId}.cpp -o ${createCodeDto.questionId} && "codes/"${createCodeDto.questionId}`;
+      // const command = `cd "/Users/shubham/Downloads/shubham/shubhamiitbhu-backend/codes/" && g++ --std=c++17 ${createCodeDto.questionId}.cpp -o ${createCodeDto.questionId} && "/Users/shubham/Downloads/shubham/shubhamiitbhu-backend/codes/"${createCodeDto.questionId}`;
+      // exec(command, (error, stdout, stderr) => {
+      //   if (error) {
+      //     console.error(`exec error: ${error}`);
+      //     reject({
+      //       message: error,
+      //       status: 400,
+      //     });
+      //   }
+
+      //   console.log(`stdout: ${stdout}`);
+      //   resolve({
+      //     output: stdout,
+      //     message: 'Code executed successfully',
+      //     status: 200,
+      //   });
+
+      //   console.error(`stderr: ${stderr}`);
+      // });
+      const command = `gcc --version`;
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          reject({
+            message: error,
+            status: 400,
+          });
+        }
+
+        console.log(`stdout: ${stdout}`);
+        resolve({
+          output: stdout,
+          message: 'Code executed successfully',
+          status: 200,
+        });
+
+        console.error(`stderr: ${stderr}`);
+      });
+    });
+  }
+  async checkGccVersion() {
+    return new Promise((resolve, reject) => {
+      const command = `gcc --version`;
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          reject({
+            message: error,
+            status: 400,
+          });
+        } else {
+          console.log(`stdout: ${stdout}`);
+          resolve({
+            output: stdout,
+            message: 'Code executed successfully',
+            status: 200,
+          });
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+        }
+      });
+    });
   }
 }
