@@ -22,7 +22,7 @@ export class CodeController {
   }
   @Post('run-code')
   async runCode(@Body() createCodeDto: CreateCodeDto) {
-    return this.codeService.runCode(createCodeDto);
+    return this.codeService.runCode1(createCodeDto);
   }
   @Get('get-gcc-version')
   async getGccVersion() {

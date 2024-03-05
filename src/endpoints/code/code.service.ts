@@ -175,4 +175,29 @@ export class CodeService {
       path: process.cwd(),
     };
   }
+
+  async runCode1(createCodeDto: CreateCodeDto) {
+    const code = createCodeDto.code;
+    const formdata = new FormData();
+    formdata.append('code', code);
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow' as RequestRedirect,
+    };
+    const res = await fetch(
+      `https://try.w3schools.com/try_cpp.php?x=${Math.random().toPrecision(15)}`,
+      requestOptions,
+    );
+    const data = await res.text();
+    const regex = /<pre.*?>(.*?)<\/pre>/s;
+    const found = data.match(regex);
+    if (found) {
+      return {
+        output: found[1],
+        message: 'Code executed successfully',
+        status: 200,
+      }
+    }
+  }
 }
