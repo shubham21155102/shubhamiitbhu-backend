@@ -28,4 +28,8 @@ export class CodeController {
   async getGccVersion() {
     return this.codeService.checkGccVersion();
   }
+  @Get('get-working-directory')
+  async getWorkingDirectory() {
+    return this.codeService.gettingWorkingPath();
+  }
 }

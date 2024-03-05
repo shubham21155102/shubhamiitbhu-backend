@@ -91,48 +91,62 @@ export class CodeService {
     }
 
     return new Promise((resolve, reject) => {
-      // const command = `cd "codes/" && g++ --std=c++17 ${createCodeDto.questionId}.cpp -o ${createCodeDto.questionId} && "codes/"${createCodeDto.questionId}`;
-      // const command = `cd "/Users/shubham/Downloads/shubham/shubhamiitbhu-backend/codes/" && g++ --std=c++17 ${createCodeDto.questionId}.cpp -o ${createCodeDto.questionId} && "/Users/shubham/Downloads/shubham/shubhamiitbhu-backend/codes/"${createCodeDto.questionId}`;
-      // exec(command, (error, stdout, stderr) => {
-      //   if (error) {
-      //     console.error(`exec error: ${error}`);
-      //     reject({
-      //       message: error,
-      //       status: 400,
-      //     });
-      //   }
+      const currentDirectory = process.cwd();
+      const filePath = `${currentDirectory}/codes/${createCodeDto.questionId}.cpp`;
+      const outputFilePath = `${currentDirectory}/codes/${createCodeDto.questionId}`;
 
-      //   console.log(`stdout: ${stdout}`);
-      //   resolve({
-      //     output: stdout,
-      //     message: 'Code executed successfully',
-      //     status: 200,
-      //   });
+      const compileCommand = `g++ --std=c++17 ${filePath} -o ${outputFilePath}`;
+      const executeCommand = `${outputFilePath}`;
 
-      //   console.error(`stderr: ${stderr}`);
-      // });
-      const command = `gcc --version`;
-      exec(command, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
+      exec(compileCommand, (compileError, compileStdout, compileStderr) => {
+        if (compileError) {
+          console.error(`Compilation error: ${compileError}`);
           reject({
-            message: error,
+            message: compileError,
             status: 400,
           });
+          return;
         }
 
-        console.log(`stdout: ${stdout}`);
-        resolve({
-          output: stdout,
-          message: 'Code executed successfully',
-          status: 200,
-        });
+        console.log(`Compilation stdout: ${compileStdout}`);
 
-        console.error(`stderr: ${stderr}`);
+        exec(executeCommand, (executeError, executeStdout, executeStderr) => {
+          if (executeError) {
+            console.error(`Execution error: ${executeError}`);
+            reject({
+              message: executeError,
+              status: 400,
+            });
+            return;
+          }
+
+          console.log(`Execution stdout: ${executeStdout}`);
+          exec(
+            `rm -f ${filePath} ${outputFilePath}`,
+            (removeError, removeStdout, removeStderr) => {
+              if (removeError) {
+                console.error(`Error deleting files: ${removeError}`);
+                reject({
+                  message: removeError,
+                  status: 400,
+                });
+                return;
+              }
+
+              console.log('Files deleted successfully');
+
+              resolve({
+                output: executeStdout,
+                message: 'Code executed successfully',
+                status: 200,
+              });
+            },
+          );
+        });
       });
     });
   }
-  async checkGccVersion() {
+  checkGccVersion() {
     return new Promise((resolve, reject) => {
       const command = `gcc --version`;
       exec(command, (error, stdout, stderr) => {
@@ -155,5 +169,10 @@ export class CodeService {
         }
       });
     });
+  }
+  async gettingWorkingPath() {
+    return {
+      path: process.cwd(),
+    };
   }
 }
