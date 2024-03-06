@@ -2,7 +2,8 @@ import {
   TypeOrmModuleAsyncOptions,
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
-
+import { readFileSync } from 'fs';
+import { join } from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config({
   path: process.env.NODE_ENV
@@ -26,7 +27,22 @@ class ConfigService {
         extra: {
           charset: 'utf8mb4_unicode_ci',
         },
-        ssl: this.getValue('POSTGRES_SSL') === 'true' ? true : false,
+        ssl:
+          this.getValue('POSTGRES_SSL') === 'true'
+            ? {
+                ca: readFileSync(
+                  // join(
+                  //   __dirname,
+                  //   // '../../data/db/ca-certificate.crt',
+                  //   // '..',
+                  //   // 'data',
+                  //   // 'db',
+                  //   // 'ca-certificate.crt',
+                  // ),
+                  join(__dirname, '/etc/secrets/ca-certificate.crt'),
+                ).toString(),
+              }
+            : false,
         synchronize: true,
         poolSize: 5,
       };
@@ -44,7 +60,15 @@ class ConfigService {
     extra: {
       charset: 'utf8mb4_unicode_ci',
     },
-    ssl: this.getValue('POSTGRES_SSL') === 'true' ? true : false,
+    ssl:
+      this.getValue('POSTGRES_SSL') === 'true'
+        ? {
+            ca: readFileSync(
+              // join(__dirname, '../../data/db/ca-certificate.crt'),
+              join(__dirname, '/etc/secrets/ca-certificate.crt'),
+            ).toString(),
+          }
+        : false,
     synchronize: true,
     logging: true,
   };
