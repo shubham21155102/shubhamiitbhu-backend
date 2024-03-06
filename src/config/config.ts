@@ -31,15 +31,15 @@ class ConfigService {
           this.getValue('POSTGRES_SSL') === 'true'
             ? {
                 ca: readFileSync(
-                  // join(
-                  //   __dirname,
-                  //   // '../../data/db/ca-certificate.crt',
-                  //   // '..',
-                  //   // 'data',
-                  //   // 'db',
-                  //   // 'ca-certificate.crt',
-                  // ),
-                  join(__dirname, '/etc/secrets/ca-certificate.crt'),
+                  join(
+                    __dirname,
+                    '../../data/db/ca-certificate.crt',
+                    // '..',
+                    // 'data',
+                    // 'db',
+                    // 'ca-certificate.crt',
+                  ),
+                  // join(__dirname, '/etc/secrets/ca-certificate.crt'),
                 ).toString(),
               }
             : false,
@@ -64,8 +64,8 @@ class ConfigService {
       this.getValue('POSTGRES_SSL') === 'true'
         ? {
             ca: readFileSync(
-              // join(__dirname, '../../data/db/ca-certificate.crt'),
-              join(__dirname, '/etc/secrets/ca-certificate.crt'),
+              join(__dirname, '../../data/db/ca-certificate.crt'),
+              // join(__dirname, '/etc/secrets/ca-certificate.crt'),
             ).toString(),
           }
         : false,
