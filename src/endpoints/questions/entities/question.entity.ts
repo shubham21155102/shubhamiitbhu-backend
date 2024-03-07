@@ -70,4 +70,8 @@ export class QuestionTags {
     name: 'tag',
   })
   tag: string;
+  @Column('varchar', {
+    name: 'tagname',
+  })
+  tagname: string;
 }

@@ -216,9 +216,9 @@ export class QuestionsService {
       data: questionTags,
     };
   }
-  async addQuestionTags(tag: any) {
+  async addQuestionTags(data: any) {
     try {
-      await this.questionTagsRepository.save(tag);
+      await this.questionTagsRepository.save(data);
       return {
         message: 'success',
         status: 200,
