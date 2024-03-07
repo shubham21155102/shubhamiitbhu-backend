@@ -216,11 +216,9 @@ export class QuestionsService {
       data: questionTags,
     };
   }
-  async addQuestionTags(tag: string) {
+  async addQuestionTags(tag: any) {
     try {
-      const tags = new QuestionTags();
-      tags.tag = tag;
-      await this.questionTagsRepository.save(tags);
+      await this.questionTagsRepository.save(tag);
       return {
         message: 'success',
         status: 200,
