@@ -53,7 +53,7 @@ export class QuestionsController {
     return this.questionsService.getQuestionTags();
   }
   @Post('questiontags')
-  async addQuestionTags(tag: string) {
+  async addQuestionTags(@Body() tag: string) {
     return this.addQuestionTags(tag);
   }
 }
