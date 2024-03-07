@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CreateQuestionDto, SearchSolvedQuestionsDto } from './dto/questions';
+import {
+  CreateExtraDsaQuestionDto,
+  CreateQuestionDto,
+  GetExtraDSAQuestionsDTO,
+  SearchSolvedQuestionsDto,
+} from './dto/questions';
 import x from './questions';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Question } from './entities/question.entity';
+import { ExtraDsaQuestion, Question } from './entities/question.entity';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 @Injectable()
@@ -12,6 +17,8 @@ export class QuestionsService {
     private readonly questionRepository: Repository<Question>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(ExtraDsaQuestion)
+    private readonly extraDsaQuestionRepository: Repository<ExtraDsaQuestion>,
   ) {}
   /**
    * @description Question solving service
@@ -153,6 +160,46 @@ export class QuestionsService {
     return {
       message: 'Questions added successfully',
       status: 201,
+    };
+  }
+  async addExtraDSAQuestions(
+    createExtraDsaQuestionDto: CreateExtraDsaQuestionDto,
+  ) {
+    try {
+      await this.extraDsaQuestionRepository.save(createExtraDsaQuestionDto);
+      return {
+        message: 'Extra DSA question added successfully',
+        status: 201,
+      };
+    } catch (e) {
+      return {
+        message: 'Error in adding extra DSA question',
+        error: e.message,
+        status: 400,
+      };
+    }
+  }
+  async getExtraDSAQuestions() {
+    const extraDsaQuestions = await this.extraDsaQuestionRepository.find();
+    return {
+      message: 'Extra DSA questions fetched successfully',
+      status: 200,
+      data: extraDsaQuestions,
+    };
+  }
+  async getExtraQuestionByTagId(
+    getExtraDSAQuestionsDTO: GetExtraDSAQuestionsDTO,
+  ) {
+    // return getExtraDSAQuestionsDTO;
+    const question = await this.extraDsaQuestionRepository.findOne({
+      where: {
+        tagid: getExtraDSAQuestionsDTO.tagid,
+      },
+    });
+    return {
+      message: 'Question fetched successfully',
+      status: 200,
+      data: question,
     };
   }
 }

@@ -40,3 +40,5 @@ export class Code extends BaseEntity {
 //   name: 'code',
 // })
 // code: Record<string, string>;
+@Entity('extra_dsa_code')
+export class ExtraDsaCode extends Code {}

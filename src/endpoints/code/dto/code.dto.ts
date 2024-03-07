@@ -8,3 +8,4 @@ export class CreateCodeDto {
   @IsString()
   questionId: string;
 }
+export class CreateExtraDsaCodeDto extends CreateCodeDto {}

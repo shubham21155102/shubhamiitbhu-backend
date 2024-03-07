@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCodeDto } from './dto/code.dto';
+import { CreateCodeDto, CreateExtraDsaCodeDto } from './dto/code.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
-import { Code } from './entities/code.entity';
+import { Code, ExtraDsaCode } from './entities/code.entity';
 import { Question } from '../questions/entities/question.entity';
 import { exec } from 'child_process';
 import * as fs from 'fs';
@@ -16,6 +16,8 @@ export class CodeService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    @InjectRepository(ExtraDsaCode)
+    private readonly extraDsaCodeRepository: Repository<ExtraDsaCode>,
   ) {}
   async create(createCodeDto: CreateCodeDto) {
     try {
@@ -197,7 +199,50 @@ export class CodeService {
         output: found[1],
         message: 'Code executed successfully',
         status: 200,
+      };
+    }
+  }
+  async addExtraDsaCode(createCodeDto: CreateExtraDsaCodeDto) {
+    try {
+      const checkExistingCode = await this.extraDsaCodeRepository.findOne({
+        where: {
+          submittedBy: createCodeDto.submittedBy,
+          questionId: createCodeDto.questionId,
+        },
+      });
+      if (checkExistingCode) {
+        checkExistingCode.code = createCodeDto.code;
+        await this.extraDsaCodeRepository.save(checkExistingCode);
+        return {
+          message: 'Code updated successfully',
+          status: 200,
+        };
       }
+      const code = await this.extraDsaCodeRepository.create(createCodeDto);
+      await this.extraDsaCodeRepository.save(code);
+    } catch (e) {
+      console.log(e);
+    }
+    return {
+      message: 'Code submitted successfully',
+      status: 200,
+    };
+  }
+  async getExtraDsaCodeByQuestionIdAAndUserId(
+    questionId: string,
+    userId: string,
+  ) {
+    if (!questionId || !userId)
+      return {
+        message: 'Please provide questionId and userId both',
+        status: 400,
+      };
+    try {
+      return await this.extraDsaCodeRepository.find({
+        where: { submittedBy: userId, questionId: questionId },
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 }

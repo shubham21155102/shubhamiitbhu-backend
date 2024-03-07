@@ -32,4 +32,15 @@ export class CodeController {
   async getWorkingDirectory() {
     return this.codeService.gettingWorkingPath();
   }
+  @Post('addextradsacode')
+  async addExtraDsaCode(@Body() createExtraDsaCodeDto: CreateCodeDto) {
+    return this.codeService.addExtraDsaCode(createExtraDsaCodeDto);
+  }
+  @Post('get-extra-dsa-code')
+  async getExtraDsaCode(@Body() data: { questionId: string; userId: string }) {
+    return this.codeService.getExtraDsaCodeByQuestionIdAAndUserId(
+      data.questionId,
+      data.userId,
+    );
+  }
 }
