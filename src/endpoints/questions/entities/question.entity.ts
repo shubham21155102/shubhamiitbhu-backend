@@ -60,3 +60,13 @@ export class ExtraDsaQuestion {
   })
   questionname: string;
 }
+export class QuestionTags {
+  @PrimaryGeneratedColumn('uuid', {
+    name: 'id',
+  })
+  id: string;
+  @Column('varchar', {
+    name: 'tag',
+  })
+  tag: string;
+}

@@ -7,7 +7,11 @@ import {
 } from './dto/questions';
 import x from './questions';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExtraDsaQuestion, Question } from './entities/question.entity';
+import {
+  ExtraDsaQuestion,
+  Question,
+  QuestionTags,
+} from './entities/question.entity';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 @Injectable()
@@ -19,6 +23,8 @@ export class QuestionsService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(ExtraDsaQuestion)
     private readonly extraDsaQuestionRepository: Repository<ExtraDsaQuestion>,
+    @InjectRepository(QuestionTags)
+    private readonly questionTagsRepository: Repository<QuestionTags>,
   ) {}
   /**
    * @description Question solving service
@@ -201,5 +207,29 @@ export class QuestionsService {
       status: 200,
       data: question,
     };
+  }
+  async getQuestionTags() {
+    const questionTags = await this.questionTagsRepository.find();
+    return {
+      message: 'Question tags fetched successfully',
+      status: 200,
+      data: questionTags,
+    };
+  }
+  async addQuestionTags(tag: string) {
+    try {
+      const tags = new QuestionTags();
+      tags.tag = tag;
+      await this.questionTagsRepository.save(tags);
+      return {
+        message: 'success',
+        status: 200,
+      };
+    } catch (e) {
+      return {
+        message: e.message,
+        status: 400,
+      };
+    }
   }
 }

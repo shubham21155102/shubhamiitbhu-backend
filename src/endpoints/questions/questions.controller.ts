@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import {
   CreateExtraDsaQuestionDto,
@@ -47,5 +47,13 @@ export class QuestionsController {
     return this.questionsService.getExtraQuestionByTagId(
       getExtraDSAQuestionsDTO,
     );
+  }
+  @Get('questiontags')
+  async getTags() {
+    return this.questionsService.getQuestionTags();
+  }
+  @Post('questiontags')
+  async addQuestionTags(tag: string) {
+    return this.addQuestionTags(tag);
   }
 }
