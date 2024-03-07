@@ -60,6 +60,7 @@ export class ExtraDsaQuestion {
   })
   questionname: string;
 }
+@Entity('question_tags')
 export class QuestionTags {
   @PrimaryGeneratedColumn('uuid', {
     name: 'id',
