@@ -130,20 +130,36 @@ export class QuestionsService {
    * @returns
    */
   async findAll(userId: SearchSolvedQuestionsDto) {
-    const userWithSolvedQuestions = await this.userRepository.findOne({
-      relations: ['questions'],
-      where: {
-        id: userId.userId,
-      },
-    });
-    const allQuestionIds = userWithSolvedQuestions.questions.map(
-      (q) => q.questionid,
+    const allSolvedQuestionWithIdCache = await this.cacheManager.get(
+      `allSolvedQuestionWithIdCache${userId.userId}`,
     );
-    return {
-      message: 'All questions fetched successfully',
-      status: 200,
-      data: allQuestionIds,
-    };
+    if (!allSolvedQuestionWithIdCache) {
+      const userWithSolvedQuestions = await this.userRepository.findOne({
+        relations: ['questions'],
+        where: {
+          id: userId.userId,
+        },
+      });
+      const allQuestionIds = userWithSolvedQuestions.questions.map(
+        (q) => q.questionid,
+      );
+      await this.cacheManager.set(
+        `allSolvedQuestionWithIdCache${userId.userId}`,
+        allQuestionIds,
+        24 * 60 * 60 * 1000,
+      );
+      return {
+        message: 'All questions fetched successfully',
+        status: 200,
+        data: allQuestionIds,
+      };
+    } else {
+      return {
+        message: 'All questions fetched successfully',
+        status: 200,
+        data: allSolvedQuestionWithIdCache,
+      };
+    }
   }
   /**
    * @description Add bulk questions
@@ -190,12 +206,28 @@ export class QuestionsService {
     }
   }
   async getExtraDSAQuestions() {
-    const extraDsaQuestions = await this.extraDsaQuestionRepository.find();
-    return {
-      message: 'Extra DSA questions fetched successfully',
-      status: 200,
-      data: extraDsaQuestions,
-    };
+    const extraDSACachedQuestions = await this.cacheManager.get(
+      'extraDSACachedQuestions',
+    );
+    if (!extraDSACachedQuestions) {
+      const extraDsaQuestions = await this.extraDsaQuestionRepository.find();
+      await this.cacheManager.set(
+        'extraDSACachedQuestions',
+        extraDsaQuestions,
+        24 * 60 * 60 * 1000,
+      );
+      return {
+        message: 'Extra DSA questions fetched successfully',
+        status: 200,
+        data: extraDsaQuestions,
+      };
+    } else {
+      return {
+        message: 'Extra DSA questions fetched successfully',
+        status: 200,
+        data: extraDSACachedQuestions,
+      };
+    }
   }
   async getExtraQuestionByTagId(
     getExtraDSAQuestionsDTO: GetExtraDSAQuestionsDTO,
@@ -236,6 +268,7 @@ export class QuestionsService {
     }
   }
   async addQuestionTags(data: any) {
+    await this.cacheManager.del('questionTags');
     try {
       await this.questionTagsRepository.save(data);
       return {
