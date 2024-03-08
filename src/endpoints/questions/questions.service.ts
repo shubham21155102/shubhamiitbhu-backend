@@ -135,22 +135,24 @@ export class QuestionsService {
    * @param userId
    * @returns
    */
-  async findAll(userId: SearchSolvedQuestionsDto) {
+  async findAll(searchSolvedQuestionsDto: SearchSolvedQuestionsDto) {
+    console.log(searchSolvedQuestionsDto);
     const allSolvedQuestionWithIdCache = await this.cacheManager.get(
-      `allSolvedQuestionWithIdCache${userId.userId}`,
+      `allSolvedQuestionWithIdCache${searchSolvedQuestionsDto.userId}`,
     );
     if (!allSolvedQuestionWithIdCache) {
       const userWithSolvedQuestions = await this.userRepository.findOne({
         relations: ['questions'],
         where: {
-          id: userId.userId,
+          id: searchSolvedQuestionsDto.userId,
         },
       });
       const allQuestionIds = userWithSolvedQuestions.questions.map(
         (q) => q.questionid,
       );
+      console.log(searchSolvedQuestionsDto.userId);
       await this.cacheManager.set(
-        `allSolvedQuestionWithIdCache${userId.userId}`,
+        `allSolvedQuestionWithIdCache${searchSolvedQuestionsDto.userId}`,
         allQuestionIds,
         24 * 60 * 60 * 1000,
       );
