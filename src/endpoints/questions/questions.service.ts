@@ -36,6 +36,9 @@ export class QuestionsService {
    * @returns
    */
   async create(createQuestionDto: CreateQuestionDto) {
+    await this.cacheManager.del(
+      `allSolvedQuestionWithIdCache${createQuestionDto.userid}`,
+    );
     try {
       const question = await this.questionRepository.findOne({
         where: {
@@ -83,6 +86,9 @@ export class QuestionsService {
    * @returns
    */
   async remove(createQuestionDto: CreateQuestionDto) {
+    await this.cacheManager.del(
+      `allSolvedQuestionWithIdCache${createQuestionDto.userid}`,
+    );
     try {
       const question = await this.questionRepository.findOne({
         where: {
