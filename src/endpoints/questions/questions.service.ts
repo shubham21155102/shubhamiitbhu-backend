@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateExtraDsaQuestionDto,
   CreateQuestionDto,
@@ -14,6 +14,9 @@ import {
 } from './entities/question.entity';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { configService } from 'src/config/config';
 @Injectable()
 export class QuestionsService {
   constructor(
@@ -25,6 +28,7 @@ export class QuestionsService {
     private readonly extraDsaQuestionRepository: Repository<ExtraDsaQuestion>,
     @InjectRepository(QuestionTags)
     private readonly questionTagsRepository: Repository<QuestionTags>,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
   /**
    * @description Question solving service
@@ -209,12 +213,27 @@ export class QuestionsService {
     };
   }
   async getQuestionTags() {
-    const questionTags = await this.questionTagsRepository.find();
-    return {
-      message: 'Question tags fetched successfully',
-      status: 200,
-      data: questionTags,
-    };
+    configService.getRedisConnectionString();
+    const CachedQuestionTags = await this.cacheManager.get('questionTags');
+    if (!CachedQuestionTags) {
+      const questionTags = await this.questionTagsRepository.find();
+      await this.cacheManager.set(
+        'questionTags',
+        questionTags,
+        24 * 60 * 60 * 1000,
+      );
+      return {
+        message: 'Question tags fetched successfully',
+        status: 200,
+        data: questionTags,
+      };
+    } else {
+      return {
+        message: 'Question tags fetched successfully',
+        status: 200,
+        data: CachedQuestionTags,
+      };
+    }
   }
   async addQuestionTags(data: any) {
     try {

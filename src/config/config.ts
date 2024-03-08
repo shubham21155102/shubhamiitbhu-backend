@@ -77,6 +77,34 @@ class ConfigService {
     keys.forEach((k) => this.getValue(k, true));
     return this;
   }
+  public getRedisConnectionString(): string {
+    // console.log(`${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`)
+    return `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`;
+  }
+
+  public getRedisTLS(): string {
+    return this.getValue('REDIS_TLS', true);
+  }
+
+  public getRedisPrefix(): string {
+    return this.getValue('REDIS_PREFIX', true);
+  }
+
+  public getRedisURL(): string {
+    return this.getValue('REDIS_URL', true);
+  }
+
+  public getRedisPort(): string {
+    return this.getValue('REDIS_PORT', true);
+  }
+
+  public getRedisUser(): string {
+    return this.getValue('REDIS_USER', true);
+  }
+
+  public getRedisPassword(): string {
+    return this.getValue('REDIS_PASSWORD', true);
+  }
   public getPort(): number {
     return parseInt(this.getValue('PORT', true));
   }
