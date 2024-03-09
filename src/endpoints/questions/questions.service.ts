@@ -199,6 +199,7 @@ export class QuestionsService {
   async addExtraDSAQuestions(
     createExtraDsaQuestionDto: CreateExtraDsaQuestionDto,
   ) {
+    await this.cacheManager.del('extraDSACachedQuestions');
     try {
       await this.extraDsaQuestionRepository.save(createExtraDsaQuestionDto);
       return {
