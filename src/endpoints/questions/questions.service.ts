@@ -215,6 +215,7 @@ export class QuestionsService {
     }
   }
   async getExtraDSAQuestions() {
+    // console.log(configService.getRedisConnectionString());
     const extraDSACachedQuestions = await this.cacheManager.get(
       'extraDSACachedQuestions',
     );

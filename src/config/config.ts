@@ -78,8 +78,11 @@ class ConfigService {
     return this;
   }
   public getRedisConnectionString(): string {
-    // console.log(`${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`)
-    return `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`;
+    // console.log(
+    //   `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`,
+    // );
+    // return `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`;
+    return this.getValue('REDIS_URI2', true);
   }
 
   public getRedisTLS(): string {
