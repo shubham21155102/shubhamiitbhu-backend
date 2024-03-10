@@ -7,5 +7,7 @@ export class CreateCodeDto {
   submittedBy: string;
   @IsString()
   questionId: string;
+  @IsString()
+  language: string;
 }
 export class CreateExtraDsaCodeDto extends CreateCodeDto {}

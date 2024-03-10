@@ -180,6 +180,10 @@ export class CodeService {
 
   async runCode1(createCodeDto: CreateCodeDto) {
     const code = createCodeDto.code;
+    let language = 'cpp';
+    if (createCodeDto.language) {
+      language = createCodeDto.language;
+    }
     const formdata = new FormData();
     formdata.append('code', code);
     const requestOptions: RequestInit = {
@@ -188,7 +192,7 @@ export class CodeService {
       redirect: 'follow' as RequestRedirect,
     };
     const res = await fetch(
-      `https://try.w3schools.com/try_cpp.php?x=${Math.random().toPrecision(15)}`,
+      `https://try.w3schools.com/try_${language}.php?x=${Math.random().toPrecision(15)}`,
       requestOptions,
     );
     const data = await res.text();
