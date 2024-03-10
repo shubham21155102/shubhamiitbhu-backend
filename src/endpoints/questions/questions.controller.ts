@@ -57,4 +57,9 @@ export class QuestionsController {
     // return tag;
     return this.questionsService.addQuestionTags(data);
   }
+  @Post('lintcode')
+  async getLintCodeQuestions(@Body() data: { page: number; pagesize: number }) {
+    // return data;
+    return this.questionsService.LintCode(data);
+  }
 }

@@ -292,4 +292,30 @@ export class QuestionsService {
       };
     }
   }
+  async LintCode(input: any) {
+    try {
+      let questions = [];
+      // return `https://apiv1.lintcode.com/new/api/problems/?_format=new&problem_type_id=4&page_size=${input.pagesize}&page=${input.page}`;
+      const res = await fetch(
+        `https://apiv1.lintcode.com/new/api/problems/?_format=new&problem_type_id=4&page_size=${input.pagesize}&page=${input.page}`,
+        {
+          method: 'GET',
+          redirect: 'follow',
+        },
+      );
+      const data = await res.json();
+      questions = data.data;
+      return {
+        message: 'success',
+        status: data.code,
+        count: data.count,
+        data: questions,
+      };
+    } catch (e) {
+      return {
+        message: e.message,
+        status: 400,
+      };
+    }
+  }
 }
