@@ -5,6 +5,7 @@ import { configService } from './config/config';
 import { QuestionsModule } from './endpoints/questions/questions.module';
 import { PaymentModule } from './endpoints/payment/payment.module';
 import { CodeModule } from './endpoints/code/code.module';
+import { MyaiModule } from './endpoints/myai/myai.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CodeModule } from './endpoints/code/code.module';
     QuestionsModule,
     PaymentModule,
     CodeModule,
+    MyaiModule,
   ],
   controllers: [],
   providers: [],
