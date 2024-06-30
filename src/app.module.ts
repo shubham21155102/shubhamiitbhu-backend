@@ -6,6 +6,7 @@ import { QuestionsModule } from './endpoints/questions/questions.module';
 import { PaymentModule } from './endpoints/payment/payment.module';
 import { CodeModule } from './endpoints/code/code.module';
 import { MyaiModule } from './endpoints/myai/myai.module';
+import { JsplModule } from './endpoints/jspl/jspl.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MyaiModule } from './endpoints/myai/myai.module';
     PaymentModule,
     CodeModule,
     MyaiModule,
+    JsplModule,
   ],
   controllers: [],
   providers: [],
