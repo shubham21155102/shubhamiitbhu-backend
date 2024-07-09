@@ -14,4 +14,8 @@ export class JsplController {
   async getAllOrders() {
     return this.jsplService.getAllOrders();
   }
+  @Get('tippers')
+  async fetchAllVehicles() {
+    return this.jsplService.fetchAllVehicles();
+  }
 }

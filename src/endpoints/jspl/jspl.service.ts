@@ -35,4 +35,25 @@ export class JsplService {
       data: orders,
     };
   }
+  async fetchAllVehicles() {
+    try {
+      const vehicles = await fetch(
+        'https://linqhaul.trackgpsfleet.com/api/v5/vehicles/movement_status?locale=en&vehicle_ids=778863,778869,779379,779380,779388,779429,779443,779451,779457,779464,779469,779723,779781,779784,779786,779789,780254,780259,778856,779375,779384,779434,779447,779454,779459,779461,779772,779773,779774,779776,780260,780264,778922,779381,778851',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'bsTKz__dQyKQupknNmCg',
+          },
+        },
+      );
+      const data = await vehicles.json();
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
