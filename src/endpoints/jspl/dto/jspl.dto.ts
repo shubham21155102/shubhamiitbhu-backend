@@ -1,5 +1,4 @@
 import { IsNotEmpty } from 'class-validator';
-
 export class JSPLCreateOrderDto {
   @IsNotEmpty()
   vehicleType: string;
@@ -9,4 +8,8 @@ export class JSPLCreateOrderDto {
   startTime: string;
   @IsNotEmpty()
   endTime: string;
+  @IsNotEmpty()
+  shift: string;
+  @IsNotEmpty()
+  date: string;
 }

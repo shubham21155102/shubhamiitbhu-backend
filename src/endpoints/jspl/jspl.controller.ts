@@ -18,4 +18,9 @@ export class JsplController {
   async fetchAllVehicles() {
     return this.jsplService.fetchAllVehicles();
   }
+  @Post('tippers')
+  async trackVehicle(@Body() data: { vehicleId: string }) {
+    console.log(data);
+    return this.jsplService.trackVehicle(data.vehicleId);
+  }
 }

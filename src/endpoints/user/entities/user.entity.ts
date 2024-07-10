@@ -65,4 +65,66 @@ export class JSPLData extends BaseEntity {
     nullable: false,
   })
   endTime: string;
+  @Column('enum', {
+    name: 'shift',
+    enum: ['A', 'B', 'C', 'General'],
+    default: 'General',
+    nullable: false,
+  })
+  shift: string;
+  @Column('varchar', {
+    name: 'date',
+    length: 255,
+    default: '2024-07-10',
+    nullable: false,
+  })
+  date: string;
+}
+export class TipperTrips {
+  @PrimaryGeneratedColumn('uuid', {
+    name: 'id',
+  })
+  id: string;
+  @Column('varchar', {
+    name: 'vehicle_id',
+    length: 255,
+    nullable: false,
+  })
+  vehicleId: string;
+  @Column('varchar', {
+    name: 'vehicle_number',
+    length: 255,
+    nullable: false,
+  })
+  vehicleNumber: string;
+  @Column('varchar', {
+    name: 'start_time',
+    length: 255,
+    nullable: false,
+  })
+  startTime: string;
+  @Column('varchar', {
+    name: 'end_time',
+    length: 255,
+    nullable: false,
+  })
+  endTime: string;
+  @Column('varchar', {
+    name: 'start_location',
+    length: 255,
+    nullable: false,
+  })
+  startLocation: string;
+  @Column('varchar', {
+    name: 'end_location',
+    length: 255,
+    nullable: false,
+  })
+  endLocation: string;
+  @Column('varchar', {
+    name: 'material',
+    length: 255,
+    nullable: false,
+  })
+  material: string;
 }
