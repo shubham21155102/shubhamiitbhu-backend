@@ -1,6 +1,10 @@
 import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { JsplService } from './jspl.service';
-import { DeleteJSPLDTO, JSPLCreateOrderDto } from './dto/jspl.dto';
+import {
+  DeleteJSPLDTO,
+  FilterJSPLDTO,
+  JSPLCreateOrderDto,
+} from './dto/jspl.dto';
 
 @Controller('jspl')
 export class JsplController {
@@ -26,5 +30,9 @@ export class JsplController {
   @Delete()
   async deleteTrips(@Body() deleteJSPLDTO: DeleteJSPLDTO) {
     return this.jsplService.deleteTrip(deleteJSPLDTO);
+  }
+  @Get('filter')
+  async filterTrips(@Body() filterJSPLDTO: FilterJSPLDTO) {
+    return this.jsplService.filterJSPLTrips(filterJSPLDTO);
   }
 }
