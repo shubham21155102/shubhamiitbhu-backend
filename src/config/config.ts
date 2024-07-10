@@ -82,7 +82,7 @@ class ConfigService {
     //   `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`,
     // );
     // return `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`;
-    return this.getValue('REDIS_URI2', true);
+    return this.getValue('REDIS_URI1', true);
   }
 
   public getRedisTLS(): string {
