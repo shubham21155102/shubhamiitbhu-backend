@@ -31,7 +31,7 @@ export class JsplController {
   async deleteTrips(@Body() deleteJSPLDTO: DeleteJSPLDTO) {
     return this.jsplService.deleteTrip(deleteJSPLDTO);
   }
-  @Get('filter')
+  @Post('filter')
   async filterTrips(@Body() filterJSPLDTO: FilterJSPLDTO) {
     return this.jsplService.filterJSPLTrips(filterJSPLDTO);
   }

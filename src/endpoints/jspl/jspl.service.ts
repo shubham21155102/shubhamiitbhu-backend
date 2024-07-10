@@ -88,6 +88,18 @@ export class JsplService {
         data: trips,
       };
     }
+    if (filterJSPLdto.shiftAndDate === true) {
+      const trips = await this.JSPLRepository.find({
+        where: {
+          shift: filterJSPLdto.shiftOnly,
+          date: filterJSPLdto.dateOnly,
+        },
+      });
+      return {
+        status: 200,
+        data: trips,
+      };
+    }
     if (filterJSPLdto.shiftOnly) {
       const trips = await this.JSPLRepository.find({
         where: {
@@ -102,18 +114,6 @@ export class JsplService {
     if (filterJSPLdto.dateOnly) {
       const trips = await this.JSPLRepository.find({
         where: {
-          date: filterJSPLdto.dateOnly,
-        },
-      });
-      return {
-        status: 200,
-        data: trips,
-      };
-    }
-    if (filterJSPLdto.shiftAndDate) {
-      const trips = await this.JSPLRepository.find({
-        where: {
-          shift: filterJSPLdto.shiftOnly,
           date: filterJSPLdto.dateOnly,
         },
       });
