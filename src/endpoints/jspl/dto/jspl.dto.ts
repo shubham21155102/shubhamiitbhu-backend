@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 export class JSPLCreateOrderDto {
   @IsNotEmpty()
   vehicleType: string;
@@ -12,4 +12,22 @@ export class JSPLCreateOrderDto {
   shift: string;
   @IsNotEmpty()
   date: string;
+}
+export class DeleteJSPLDTO {
+  @IsOptional()
+  id: string;
+  @IsOptional()
+  deleteAll: boolean;
+}
+export class FilterJSPLDTO {
+  @IsOptional()
+  vehicleId: string;
+  @IsOptional()
+  vehicleType: string;
+  @IsOptional()
+  shiftOnly: string;
+  @IsOptional()
+  dateOnly: string;
+  @IsOptional()
+  shiftAndDate: boolean;
 }

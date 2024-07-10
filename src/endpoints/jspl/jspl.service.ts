@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getDistance } from 'geolib';
 import { Repository } from 'typeorm';
-import { JSPLCreateOrderDto } from './dto/jspl.dto';
+import {
+  DeleteJSPLDTO,
+  FilterJSPLDTO,
+  JSPLCreateOrderDto,
+} from './dto/jspl.dto';
 import { JSPLData } from '../user/entities/user.entity';
 // import { Cron, CronExpression } from '@nestjs/schedule';
 
@@ -36,6 +40,92 @@ export class JsplService {
     return {
       status: 200,
       data: orders,
+    };
+  }
+  async deleteTrip(deleteJSPLDTO: DeleteJSPLDTO) {
+    if (deleteJSPLDTO.id) {
+      const trip = await this.JSPLRepository.delete(deleteJSPLDTO.id);
+      return {
+        status: 200,
+        message: 'Trip deleted successfully',
+        data: trip,
+      };
+    }
+    if (deleteJSPLDTO.deleteAll) {
+      const trips = await this.JSPLRepository.clear();
+      return {
+        status: 200,
+        message: 'All trips deleted successfully',
+        data: trips,
+      };
+    } else {
+      return {
+        status: 400,
+        message: 'Please provide an ID or set deleteAll to true',
+      };
+    }
+  }
+  async filterJSPLTrips(filterJSPLdto: FilterJSPLDTO) {
+    if (filterJSPLdto.vehicleId) {
+      const trips = await this.JSPLRepository.find({
+        where: {
+          vehicleId: filterJSPLdto.vehicleId,
+        },
+      });
+      return {
+        status: 200,
+        data: trips,
+      };
+    }
+    if (filterJSPLdto.vehicleType) {
+      const trips = await this.JSPLRepository.find({
+        where: {
+          vehicleType: filterJSPLdto.vehicleType,
+        },
+      });
+      return {
+        status: 200,
+        data: trips,
+      };
+    }
+    if (filterJSPLdto.shiftOnly) {
+      const trips = await this.JSPLRepository.find({
+        where: {
+          shift: filterJSPLdto.shiftOnly,
+        },
+      });
+      return {
+        status: 200,
+        data: trips,
+      };
+    }
+    if (filterJSPLdto.dateOnly) {
+      const trips = await this.JSPLRepository.find({
+        where: {
+          date: filterJSPLdto.dateOnly,
+        },
+      });
+      return {
+        status: 200,
+        data: trips,
+      };
+    }
+    if (filterJSPLdto.shiftAndDate) {
+      const trips = await this.JSPLRepository.find({
+        where: {
+          shift: filterJSPLdto.shiftOnly,
+          date: filterJSPLdto.dateOnly,
+        },
+      });
+      return {
+        status: 200,
+        data: trips,
+      };
+    }
+    const trips = await this.JSPLRepository.find();
+    return {
+      status: 200,
+      data: trips,
     };
   }
   async fetchAllVehicles() {

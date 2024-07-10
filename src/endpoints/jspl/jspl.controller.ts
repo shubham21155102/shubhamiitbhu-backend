@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { JsplService } from './jspl.service';
-import { JSPLCreateOrderDto } from './dto/jspl.dto';
+import { DeleteJSPLDTO, JSPLCreateOrderDto } from './dto/jspl.dto';
 
 @Controller('jspl')
 export class JsplController {
@@ -22,5 +22,9 @@ export class JsplController {
   async trackVehicle(@Body() data: { vehicleId: string }) {
     console.log(data);
     return this.jsplService.trackVehicle(data.vehicleId);
+  }
+  @Delete()
+  async deleteTrips(@Body() deleteJSPLDTO: DeleteJSPLDTO) {
+    return this.jsplService.deleteTrip(deleteJSPLDTO);
   }
 }
