@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { GateService } from './gate.service';
 import { CreateGateDto, FetchGateDto } from './dto/create-gate.dto';
@@ -21,7 +22,7 @@ export class GateController {
   }
 
   @Get()
-  findAll(@Body() fetchGateDto: FetchGateDto) {
+  findAll(@Query() fetchGateDto: FetchGateDto) {
     console.log(fetchGateDto + 'fetchGateDto');
     return this.gateService.findAll(fetchGateDto);
   }
