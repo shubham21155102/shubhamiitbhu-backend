@@ -7,6 +7,7 @@ import { PaymentModule } from './endpoints/payment/payment.module';
 import { CodeModule } from './endpoints/code/code.module';
 import { MyaiModule } from './endpoints/myai/myai.module';
 import { JsplModule } from './endpoints/jspl/jspl.module';
+import { GateModule } from './endpoints/gate/gate.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { JsplModule } from './endpoints/jspl/jspl.module';
     CodeModule,
     MyaiModule,
     JsplModule,
+    GateModule,
   ],
   controllers: [],
   providers: [],
