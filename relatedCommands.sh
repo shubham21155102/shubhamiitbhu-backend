@@ -1,0 +1,1 @@
+nest g resources graphql-fetch endpoints
