@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """Unique identifier for the user"""
+  id: Int!
+
+  """Name of the user"""
+  name: String!
+
+  """Age of the user"""
+  age: Int!
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User!
+}
+
+type Mutation {
+  createUser(createGraphqlFetchInput: CreateGraphqlFetchInput!): User!
+  updateUser(updateGraphqlFetchInput: UpdateGraphqlFetchInput!): User!
+  removeUser(id: Int!): User!
+}
+
+input CreateGraphqlFetchInput {
+  name: String!
+  age: Int!
+}
+
+input UpdateGraphqlFetchInput {
+  name: String
+  age: Int
+  id: Int!
+}
