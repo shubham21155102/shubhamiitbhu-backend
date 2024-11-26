@@ -9,5 +9,7 @@ export class CreateCodeDto {
   questionId: string;
   @IsString()
   language: string;
+  @IsString()
+  input: string;
 }
 export class CreateExtraDsaCodeDto extends CreateCodeDto {}

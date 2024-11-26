@@ -7,6 +7,9 @@ export class Code extends BaseEntity {
   @PrimaryGeneratedColumn('uuid', {
     name: 'id',
   })
+  @PrimaryGeneratedColumn('identity', {
+    name: 'id2',
+  })
   id: string;
 
   @Column('text', {

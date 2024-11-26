@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CashFreePaymentCreationDto } from './dto/paymentDto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { configService } from 'src/config/config';
+import { Response } from 'express';
 
 @Injectable()
 export class PaymentService {
@@ -32,6 +33,7 @@ export class PaymentService {
           },
           order_meta: {
             payment_methods: 'cc,dc,ppc,ccc,emi,paypal,upi,nb,app,paylater',
+            return_url: `https://payment.shubhamiitbhu.in/payment/callback`,
           },
           order_amount: cashFreePaymentCreationDto.order_amount,
           // order_id:
@@ -65,7 +67,7 @@ export class PaymentService {
    * @param orderId
    * @returns
    */
-  async checkStatus(orderId: any) {
+  async checkStatus(orderId: any, res: Response) {
     const cashFreeConfigs = configService.getCashFreeConfigs();
     const url = cashFreeConfigs.url;
     const appId = cashFreeConfigs.appId;
@@ -93,17 +95,19 @@ export class PaymentService {
       // console.log(x);
       const orderStatus = x[0].order_status;
       if (orderStatus === 'PAID') {
-        return {
-          message: 'Payment Successful',
-          success: true,
-          status: 200,
-        };
+        return res.redirect('https://payment.shubhamiitbhu.in/success');
+        // return {
+        //   message: 'Payment Successful',
+        //   success: true,
+        //   status: 200,
+        // };
       } else if (orderStatus === 'ACTIVE') {
-        return {
-          message: 'Payment Pending',
-          success: false,
-          status: 205,
-        };
+        return res.redirect('https://payment.shubhamiitbhu.in/pending');
+        // return {
+        //   message: 'Payment Pending',
+        //   success: false,
+        //   status: 205,
+        // };
       } else {
         return {
           message: 'Payment Failed',

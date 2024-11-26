@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   Query,
+  Res,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CashFreePaymentCreationDto } from './dto/paymentDto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Response } from 'express';
 
 @Controller('payment')
 export class PaymentController {
@@ -21,8 +23,11 @@ export class PaymentController {
     return this.paymentService.newOrder(cashFreePaymentCreationDto);
   }
   @Get()
-  async checkPaymentStatus(@Query('order_id') order_id: string) {
-    return this.paymentService.checkStatus(order_id);
+  async checkPaymentStatus(
+    @Query('order_id') order_id: string,
+    @Res() res: Response,
+  ) {
+    return this.paymentService.checkStatus(order_id, res);
   }
   @Get('all')
   findAll() {

@@ -43,4 +43,8 @@ export class CodeController {
       data.userId,
     );
   }
+  @Post('run-input-code')
+  async runExtraDsaCode(@Body() createExtraDsaCodeDto: CreateCodeDto) {
+    return this.codeService.RunCodeAlongWithInput(createExtraDsaCodeDto);
+  }
 }

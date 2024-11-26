@@ -7,6 +7,7 @@ import { Code, ExtraDsaCode } from './entities/code.entity';
 import { Question } from '../questions/entities/question.entity';
 import { exec } from 'child_process';
 import * as fs from 'fs';
+import path from 'path';
 @Injectable()
 export class CodeService {
   constructor(
@@ -248,5 +249,45 @@ export class CodeService {
     } catch (e) {
       console.log(e);
     }
+  }
+  async RunCodeAlongWithInput(createCodeDto: CreateCodeDto) {
+    const input = createCodeDto.input;
+    const id = Math.random().toString(36).substring(7);
+    const code = createCodeDto.code;
+    const language = 'cpp';
+
+    const dirPath = path.join(process.cwd(), 'code-runner');
+
+    // Check if the directory exists, if not, create it
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+
+    // Write the code and input files
+    await fs.writeFileSync(path.join(dirPath, `${id}.cpp`), code);
+    await fs.writeFileSync(path.join(dirPath, `${id}.txt`), input);
+
+    const command = `cd "${dirPath}" && g++ --std=c++17 ${id}.cpp -o ${id} && cat ${id}.txt | ./${id}`;
+    return new Promise((resolve, reject) => {
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          reject({
+            message: error,
+            status: 400,
+          });
+        } else {
+          console.log(`stdout: ${stdout}`);
+          resolve({
+            output: stdout,
+            message: 'Code executed successfully',
+            status: 200,
+          });
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+        }
+      });
+    });
   }
 }
