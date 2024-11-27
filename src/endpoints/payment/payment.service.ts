@@ -179,6 +179,37 @@ export class PaymentService {
       };
     }
   }
+  async cashFreeWebhook(data: any, res: Response) {
+    console.log(data);
+    console.log('Webhook');
+    const data1 = await res.json();
+    console.log(data1);
+    // const cashFreeConfigs = configService.getCashFreeConfigs();
+    // const url = cashFreeConfigs.url;
+    // const appId = cashFreeConfigs.appId;
+    // const secretKey = cashFreeConfigs.secretKey;
+    // const orderId = data.order_id;
+    // const paymentId = data.payment_id;
+    // const paymentStatus = data.payment_status;
+    // const paymentDate = data.payment_date;
+    // try {
+    //   await this.paymentRepository.update(
+    //     { order_id: orderId },
+    //     {
+    //       payment_status: paymentStatus,
+    //       payment_id: paymentId,
+    //       payment_date: paymentDate,
+    //     },
+    //   );
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    return {
+      message: 'Payment Status Updated',
+      success: true,
+      status: 200,
+    };
+  }
   findAll() {
     return `This action returns all payment`;
   }

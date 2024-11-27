@@ -31,6 +31,9 @@ export class PaymentController {
     console.log('order_id', order_id);
     return this.paymentService.checkStatus(order_id, res);
   }
+  async cashFreeWebhook(@Body() body: any, @Res() res: Response) {
+    return this.paymentService.cashFreeWebhook(body, res);
+  }
   @Get('all')
   findAll() {
     return this.paymentService.findAll();
