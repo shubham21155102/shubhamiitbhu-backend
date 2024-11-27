@@ -48,6 +48,13 @@ export class PaymentService {
           order_note: cashFreePaymentCreationDto.order_note,
         },
       };
+
+      let response: any = await fetch(options.url, {
+        method: options.method,
+        headers: options.headers,
+        body: JSON.stringify(options.data),
+      });
+      response = await response.json();
       try {
         // const res1=
         await this.paymentRepository.save({
@@ -58,18 +65,12 @@ export class PaymentService {
           order_amount: cashFreePaymentCreationDto.order_amount,
           order_currency: 'INR',
           order_note: cashFreePaymentCreationDto.order_note,
+          order_id: response?.order_id,
         });
         // console.log(res1);
       } catch (e) {
         // console.log(e);
       }
-
-      let response = await fetch(options.url, {
-        method: options.method,
-        headers: options.headers,
-        body: JSON.stringify(options.data),
-      });
-      response = await response.json();
       return {
         message: 'New Order Id Created Successfully',
         success: true,
