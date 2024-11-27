@@ -109,11 +109,12 @@ export class PaymentService {
         //   status: 205,
         // };
       } else {
-        return {
-          message: 'Payment Failed',
-          success: false,
-          status: 400,
-        };
+        return res.redirect('https://payment.shubhamiitbhu.in/failure');
+        // return {
+        //   message: 'Payment Failed',
+        //   success: false,
+        //   status: 400,
+        // };
       }
     } catch (error) {
       console.error(error);
