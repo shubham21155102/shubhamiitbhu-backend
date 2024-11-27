@@ -3,9 +3,16 @@ import { CashFreePaymentCreationDto } from './dto/paymentDto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { configService } from 'src/config/config';
 import { Response } from 'express';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Payment } from './entities/payment.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PaymentService {
+  constructor(
+    @InjectRepository(Payment)
+    private readonly paymentRepository: Repository<Payment>,
+  ) {}
   /**
    * @description This function is used to create a new order id for the payment
    * @param cashFreePaymentCreationDto
@@ -41,6 +48,21 @@ export class PaymentService {
           order_note: cashFreePaymentCreationDto.order_note,
         },
       };
+      try {
+        // const res1=
+        await this.paymentRepository.save({
+          customer_id: cashFreePaymentCreationDto.customer_id,
+          customer_email: cashFreePaymentCreationDto.customer_email,
+          customer_phone: cashFreePaymentCreationDto.customer_phone,
+          customer_name: cashFreePaymentCreationDto.customer_name,
+          order_amount: cashFreePaymentCreationDto.order_amount,
+          order_currency: 'INR',
+          order_note: cashFreePaymentCreationDto.order_note,
+        });
+        // console.log(res1);
+      } catch (e) {
+        // console.log(e);
+      }
 
       let response = await fetch(options.url, {
         method: options.method,
@@ -95,26 +117,57 @@ export class PaymentService {
       // console.log(x);
       const orderStatus = x[0].order_status;
       if (orderStatus === 'PAID') {
+        try {
+          await this.paymentRepository.update(
+            { order_id: orderId },
+            {
+              payment_status: 'PAID',
+              payment_id: x[0].payment_id,
+              payment_date: x[0].payment_date,
+            },
+          );
+        } catch (e) {}
         return res.redirect('https://payment.shubhamiitbhu.in/success');
-        // return {
-        //   message: 'Payment Successful',
-        //   success: true,
-        //   status: 200,
-        // };
+        return res.send({
+          message: 'Payment Success',
+          success: true,
+          status: 200,
+        });
       } else if (orderStatus === 'ACTIVE') {
+        console.log('ACTIVE');
+        try {
+          await this.paymentRepository.update(
+            { order_id: orderId },
+            {
+              payment_status: 'PENDING',
+            },
+          );
+        } catch (e) {
+          console.log(e);
+        }
         return res.redirect('https://payment.shubhamiitbhu.in/pending');
-        // return {
-        //   message: 'Payment Pending',
-        //   success: false,
-        //   status: 205,
-        // };
+        return res.send({
+          message: 'Payment Pending',
+          success: false,
+          status: 205,
+        });
       } else {
+        try {
+          await this.paymentRepository.update(
+            { order_id: orderId },
+            {
+              payment_status: 'FAILED',
+            },
+          );
+        } catch (e) {
+          console.log(e);
+        }
         return res.redirect('https://payment.shubhamiitbhu.in/failure');
-        // return {
-        //   message: 'Payment Failed',
-        //   success: false,
-        //   status: 400,
-        // };
+        return res.send({
+          message: 'Payment Failed',
+          success: false,
+          status: 400,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -134,6 +187,7 @@ export class PaymentService {
   }
 
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
+    console.log(updatePaymentDto);
     return `This action updates a #${id} payment`;
   }
 

@@ -13,7 +13,7 @@ import { PaymentService } from './payment.service';
 import { CashFreePaymentCreationDto } from './dto/paymentDto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Response } from 'express';
-
+// import { SkipCache } from 'src/cache';
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
@@ -23,10 +23,12 @@ export class PaymentController {
     return this.paymentService.newOrder(cashFreePaymentCreationDto);
   }
   @Get()
+  // @SkipCache()
   async checkPaymentStatus(
     @Query('order_id') order_id: string,
     @Res() res: Response,
   ) {
+    console.log('order_id', order_id);
     return this.paymentService.checkStatus(order_id, res);
   }
   @Get('all')
