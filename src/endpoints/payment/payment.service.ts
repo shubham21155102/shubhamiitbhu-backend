@@ -129,11 +129,11 @@ export class PaymentService {
           );
         } catch (e) {}
         return res.redirect('https://payment.shubhamiitbhu.in/success');
-        return res.send({
-          message: 'Payment Success',
-          success: true,
-          status: 200,
-        });
+        // return res.send({
+        //   message: 'Payment Success',
+        //   success: true,
+        //   status: 200,
+        // });
       } else if (orderStatus === 'ACTIVE') {
         console.log('ACTIVE');
         try {
@@ -147,11 +147,11 @@ export class PaymentService {
           console.log(e);
         }
         return res.redirect('https://payment.shubhamiitbhu.in/pending');
-        return res.send({
-          message: 'Payment Pending',
-          success: false,
-          status: 205,
-        });
+        // return res.send({
+        //   message: 'Payment Pending',
+        //   success: false,
+        //   status: 205,
+        // });
       } else {
         try {
           await this.paymentRepository.update(
@@ -164,11 +164,11 @@ export class PaymentService {
           console.log(e);
         }
         return res.redirect('https://payment.shubhamiitbhu.in/failure');
-        return res.send({
-          message: 'Payment Failed',
-          success: false,
-          status: 400,
-        });
+        // return res.send({
+        //   message: 'Payment Failed',
+        //   success: false,
+        //   status: 400,
+        // });
       }
     } catch (error) {
       console.error(error);

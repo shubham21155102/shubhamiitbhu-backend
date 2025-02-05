@@ -82,7 +82,7 @@ class ConfigService {
     //   `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`,
     // );
     // return `${this.getRedisPrefix()}://${this.getRedisUser()}:${this.getRedisPassword()}@${this.getRedisURL()}:${this.getRedisPort()}`;
-    return this.getValue('REDIS_URI1', true);
+    return this.getValue('REDIS_URI2', true);
   }
 
   public getRedisTLS(): string {
@@ -107,6 +107,16 @@ class ConfigService {
 
   public getRedisPassword(): string {
     return this.getValue('REDIS_PASSWORD', true);
+  }
+  public getGroqApiKeys(): string[] {
+    const keys = [];
+    for (let i = 1; i <= 5; i++) {
+      const key = this.getValue(`GROQ_API_KEY_${i}`, true);
+      if (key) {
+        keys.push(key);
+      }
+    }
+    return keys;
   }
   public getPort(): number {
     return parseInt(this.getValue('PORT', true));
